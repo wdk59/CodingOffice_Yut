@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     public int playerTurn = 0;          // 어느 플레이어 차례인지 저장해두는 변수
     public bool turnChanged = false;    // 차례가 지금 막 바뀌었는지 알려주는 변수
 
-    short[] yuts = new short[] { 0, 0, 0, 0 };  // 0: 대기, 1: 둥근 면, 2: 평평한 면, 3: 낙
-    short[] yutCount = new short[] { 0, 0, 0 };    // 0번 인덱스: 둥근 면의 개수, 1번 인덱스: 평평한 면의 개수, 2번 인덱스: 낙인 윷의 개수
+    short[] yuts = new short[] { 0, 0, 0, 0 };      // 0: 대기, 1: 둥근 면, 2: 평평한 면, 3: 낙
+    short[] yutCount = new short[] { 0, 0, 0 };     // 0번 인덱스: 둥근 면의 개수, 1번 인덱스: 평평한 면의 개수, 2번 인덱스: 낙인 윷의 개수
 
     short result = 0;   // 0: 대기, 1: 도, 2: 개, 3: 걸, 4: 윷, 5: 모, 6: 빽도, 7: 낙
 
@@ -222,6 +222,11 @@ public class GameManager : MonoBehaviour
         // 결과가 윷이나 모일 때는 윷을 다시 던지고, 아니면 윷 던지기 끝내기
         if (player.waitYut[player.waitYutTop] == 4 || player.waitYut[player.waitYutTop] == 5)
             ThrowYuts();
+        else if (player.waitYut[player.waitYutTop] == 7)    // 결과가 낙이면 턴 넘기기
+        {
+            clickedObject = null;
+            player.nextTurn();
+        }
         else
         {
             clickedObject = null;
