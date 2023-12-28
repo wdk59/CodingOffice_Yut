@@ -22,7 +22,7 @@ public class PlayerMove : MonoBehaviour
     {
         Initialize();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -35,19 +35,19 @@ public class PlayerMove : MonoBehaviour
         else if (selectingPawn && pawnSelected && remainingYut > 0) // 움직일 말 선택 함: 이제 목적지 선택하고 움직여야 함
         {
             // 움직일 목적지 선택: 이동 가능한 목적지 표시해주기, 선택하면 waitYut에서 해당 목적지 지워주고 자리 당기기, waitYutTop 업데이트, remainingYut 업데이트
-            Debug.Log(gameManager.clickedObject.transform.GetSiblingIndex());
+            Debug.Log("갈 수 있는 곳: " + gameManager.clickedObject.transform.GetSiblingIndex());
             // (보류) 일단 하나만 waitYut에 있다고 가정했을 때 움직이는지부터 확인
             // waitYut에 저장돼있는 기록을 모두 탐색하여 목적지 선택할 수 있게 하기
 
-            // 선택된 말을 목적지까지 이동
+            /* 선택된 말을 목적지까지 이동 */
             //gameManager.clickedObject.transform.position = new Vector2(4f, -4f);
-
+            
             // 말 출발 인덱스 조정
             if (pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex()] == -1)   // 말이 아직 출발하지 않았을 때
             {
                 pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex()] = 0;
             }
-            else if (waitYut[0] == 6)   // 말이 출발한 상태에서 빽도 선택 (뭔가 잘못됐는뎅)ㅡ
+            else if (waitYut[0] == 6)   // 말이 출발한 상태에서 빽도 선택 (뭔가 잘못됐는뎅)
             {
                 waitYut[0] = -1;
             }
@@ -59,8 +59,8 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex()] += waitYut[0];
-                gameManager.clickedObject.transform.position = GameObject.Find("UI").transform.Find("YutPanel").transform.GetChild(pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex()]).position;
+                pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex()] = GameObject.Find("UI").transform.Find("YutPanel").transform.GetChild(pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex()]).transform.GetComponent<PanelInfo>().nextPanel(pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex()], waitYut[0]);
+                gameManager.clickedObject.transform.position = GameObject.Find("UI").transform.Find("YutPanel").transform.GetChild(pawnLoc[gameManager.clickedObject.transform.GetSiblingIndex() - 1]).position;
             }
 
             // 순서 넘기기
